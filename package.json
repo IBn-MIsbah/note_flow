@@ -1,0 +1,19 @@
+{
+  "name": "studyflow-collab-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter web dev\" \"pnpm --filter api dev\" \"pnpm --filter realtime dev\"",
+    "build": "pnpm --filter web build && pnpm --filter api build && pnpm --filter realtime build",
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
+    "db:reset": "docker-compose down && docker-compose up -d && pnpm prisma:migrate:dev",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prisma": "^5.14.0"
+  }
+}
