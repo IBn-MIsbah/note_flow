@@ -1,3 +1,20 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="Study folw api", description="Study flow api", version="1.0.0")
+from app.api.v1.api import api_router
+
+# =========== main app instance =============
+
+app = FastAPI(title="Note flow api", description="Note flow api", version="1.0.0")
+
+
+# ======= Route registery =======
+app.include_router(api_router)
+
+
+# ========== Health status check ========
+@app.get("/health")
+async def health_check():
+    return {
+        "success": True,
+        "message": "Health check passed",
+    }
