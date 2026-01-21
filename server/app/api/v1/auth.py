@@ -36,6 +36,8 @@ async def login(
         access_token = cat(user.id)
         refresh_token = crt(user.id)
         sac(access_token=access_token, refresh_token=refresh_token, response=response)
+
+        return {"message": "Logged in successfully"}
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
