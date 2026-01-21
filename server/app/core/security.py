@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Any, Union
 
-from fastapi import Response
+from fastapi import HTTPException, Response, status
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
@@ -46,6 +46,27 @@ def create_refresh_token(subject: Union[str, Any]) -> str:
     )
 
     return encoded_jwt
+
+
+async def decode_refresh_token(refresh_token: str):
+    try:
+        payload = jwt.decode(
+            refresh_token,
+            settings.REFRESH_TOKEN_SECRET_KEY,
+            algorithms=settings.ALGORITHM,
+        )
+
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Could not validate credential",
+            )
+        return user_id
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
 
 
 def set_auth_cookeis(access_token: str, refresh_token: str, response: Response):
