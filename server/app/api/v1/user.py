@@ -29,7 +29,7 @@ async def register(
     try:
         hashed_password = hash_password(user_data.password)
         new_user = User(
-            email=user_data.email, name=user_data.name, hashed_password=hashed_password
+            email=user_data.email, name=user_data.name, password_hash=hashed_password
         )
 
         access_token = cat(new_user.id)
@@ -39,7 +39,7 @@ async def register(
 
         session.add(new_user)
         await session.commit()
-        await session.refresh()
+        await session.refresh(new_user)
         return new_user
     except Exception as e:
         raise HTTPException(
