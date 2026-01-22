@@ -81,8 +81,9 @@ async def refresh_token(
 
     return None
 
-@router.post('/logout', status_code=200, response_model=dict)
-async def logout(response:Response):
-        response.delete_cookie(key="access_token")
-        response.delete_cookie(key="refresh_token")
-        return {"message": "Logged out successfully"}
+
+@router.post("/logout", status_code=200, response_model=dict)
+async def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    response.delete_cookie(key="refresh_token")
+    return {"message": "Logged out successfully"}
